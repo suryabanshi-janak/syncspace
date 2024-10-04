@@ -12,7 +12,7 @@ async function Header() {
   await syncUser();
 
   return (
-    <nav className='mx-auto py-2 px-4 flex justify-between items-center shadow-md border-b-2'>
+    <nav className='mx-auto h-16 py-2 px-4 flex justify-between items-center shadow-md border-b-2'>
       <Link href='/' className='flex items-center'>
         <Image
           src='/logo.png'
