@@ -6,8 +6,11 @@ import { PenBox } from 'lucide-react';
 
 import { Button } from './ui/button';
 import UserMenu from './UserMenu';
+import { syncUser } from '@/lib/user';
 
 async function Header() {
+  await syncUser();
+
   return (
     <nav className='mx-auto py-2 px-4 flex justify-between items-center shadow-md border-b-2'>
       <Link href='/' className='flex items-center'>
