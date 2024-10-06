@@ -5,6 +5,7 @@ import './globals.css';
 
 import Header from '@/components/Header';
 import Providers from '@/components/Providers';
+import CreateEventDrawer from '@/components/CreateEventDrawer';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -33,6 +34,8 @@ export default function RootLayout({
               <p>Made with 💗 by Zanak</p>
             </div>
           </footer>
+
+          <CreateEventDrawer />
         </body>
       </html>
     </ClerkProvider>
