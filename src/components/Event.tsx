@@ -12,6 +12,9 @@ import {
 import { Link, Trash2 } from 'lucide-react';
 import { Button } from './ui/button';
 import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { deleteEvent } from '@/actions/event';
+import { useRouter } from 'next/navigation';
 
 interface EventProps {
   event: Event & { _count: { bookings: number } };
@@ -24,7 +27,16 @@ export default function Event({
   username,
   isPublic = false,
 }: EventProps) {
+  const router = useRouter();
+
   const [isCopied, setIsCopied] = useState<boolean>(false);
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: deleteEvent,
+    onSuccess: () => {
+      router.refresh();
+    },
+  });
 
   const onClick = () => {};
 
@@ -37,6 +49,12 @@ export default function Event({
       setTimeout(() => setIsCopied(false), 2000);
     } catch (error) {
       console.error('Failed to copy: ', error);
+    }
+  };
+
+  const onDelete = () => {
+    if (confirm('Are you sure you want to delete this event?')) {
+      mutate(event.id);
     }
   };
 
@@ -71,9 +89,9 @@ export default function Event({
             <Link className='mr-2 h-4 w-4' />
             {isCopied ? 'Copied!' : 'Copy Link'}
           </Button>
-          <Button variant='destructive'>
+          <Button variant='destructive' onClick={onDelete} disabled={isPending}>
             <Trash2 className='mr-2 h-4 w-4' />
-            Delete
+            {isPending ? 'Deleting...' : 'Delete'}
           </Button>
         </CardFooter>
       )}
