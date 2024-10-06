@@ -1,18 +1,18 @@
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { useMutation } from '@tanstack/react-query';
+
 import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { eventSchema } from '@/lib/validators';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 import {
   Select,
   SelectContent,
@@ -20,8 +20,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from './ui/select';
+import { eventSchema } from '@/lib/validators';
+import { createEvent } from '@/actions/event';
+import { useRouter } from 'next/navigation';
 
 export default function EventForm({ onClose }: { onClose: () => void }) {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof eventSchema>>({
     resolver: zodResolver(eventSchema),
     defaultValues: {
@@ -32,8 +37,16 @@ export default function EventForm({ onClose }: { onClose: () => void }) {
     },
   });
 
+  const { isPending, mutate } = useMutation({
+    mutationFn: createEvent,
+    onSuccess: () => {
+      onClose();
+      router.refresh();
+    },
+  });
+
   function onSubmit(values: z.infer<typeof eventSchema>) {
-    console.log(values);
+    mutate(values);
   }
 
   return (
@@ -106,8 +119,10 @@ export default function EventForm({ onClose }: { onClose: () => void }) {
           )}
         />
         <div className='flex items-center gap-x-4'>
-          <Button type='submit'>Create Event</Button>
-          <Button variant='outline' onClick={onClose}>
+          <Button type='submit' disabled={isPending}>
+            {isPending ? 'Submitting...' : 'Create Event'}
+          </Button>
+          <Button variant='outline' onClick={onClose} type='button'>
             Close
           </Button>
         </div>

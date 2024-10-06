@@ -21,23 +21,23 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang='en'>
-        <body className={`${inter.className} antialiased`}>
-          <Header />
-          <Providers>
+      <Providers>
+        <html lang='en'>
+          <body className={`${inter.className} antialiased`}>
+            <Header />
             <main className='min-h-[calc(100vh-7.5rem)] bg-gradient-to-b from-blue-50 to-white'>
               {children}
             </main>
-          </Providers>
-          <footer className='bg-blue-100 h-14 grid place-items-center'>
-            <div className='container mx-auto px-4 text-center text-gray-600'>
-              <p>Made with 💗 by Zanak</p>
-            </div>
-          </footer>
+            <footer className='bg-blue-100 h-14 grid place-items-center'>
+              <div className='container mx-auto px-4 text-center text-gray-600'>
+                <p>Made with 💗 by Zanak</p>
+              </div>
+            </footer>
 
-          <CreateEventDrawer />
-        </body>
-      </html>
+            <CreateEventDrawer />
+          </body>
+        </html>
+      </Providers>
     </ClerkProvider>
   );
 }
