@@ -1,9 +1,12 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useUser } from '@clerk/nextjs';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { BarLoader } from 'react-spinners';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { usernameSchema } from '@/lib/validators';
@@ -16,9 +19,10 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { updateUserName } from '@/actions/user';
 
 export default function DashboardPage() {
-  const { user } = useUser();
+  const { user, isLoaded } = useUser();
 
   const form = useForm({
     resolver: zodResolver(usernameSchema),
@@ -27,8 +31,17 @@ export default function DashboardPage() {
     },
   });
 
+  useEffect(() => {
+    form.setValue('username', user?.username ?? '');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoaded]);
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: updateUserName,
+  });
+
   function onSubmit(values: z.infer<typeof usernameSchema>) {
-    console.log(values);
+    mutate(values.username);
   }
 
   return (
@@ -53,7 +66,11 @@ export default function DashboardPage() {
                   <FormItem>
                     <FormControl>
                       <div className='flex items-center gap-2'>
-                        <span>{window?.location.origin}/</span>
+                        <span>
+                          {process.env.NEXT_PUBLIC_APP_URL ||
+                            window?.location.origin}
+                          /
+                        </span>
                         <Input placeholder='username' {...field} />
                       </div>
                     </FormControl>
@@ -62,7 +79,12 @@ export default function DashboardPage() {
                   </FormItem>
                 )}
               />
-              <Button type='submit'>Update Username</Button>
+              {isPending && (
+                <BarLoader className='mb-4' width='100%' color='#36d7b7' />
+              )}
+              <Button type='submit' disabled={isPending}>
+                Update Username
+              </Button>
             </form>
           </Form>
         </CardContent>
