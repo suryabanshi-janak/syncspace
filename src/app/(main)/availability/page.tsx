@@ -1,3 +1,9 @@
+import AvailabilityForm from '@/components/forms/AvailabilityForm';
+
 export default function AvailabilityPage() {
-  return <div>AvailabilityPage</div>;
+  return (
+    <div>
+      <AvailabilityForm />
+    </div>
+  );
 }

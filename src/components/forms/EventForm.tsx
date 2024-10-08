@@ -19,7 +19,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from './ui/select';
+} from '../ui/select';
 import { eventSchema } from '@/lib/validators';
 import { createEvent } from '@/actions/event';
 import { useRouter } from 'next/navigation';

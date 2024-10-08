@@ -5,14 +5,11 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import {
   Drawer,
-  DrawerClose,
   DrawerContent,
-  DrawerFooter,
   DrawerHeader,
   DrawerTitle,
 } from '@/components/ui/drawer';
-import { Button } from './ui/button';
-import EventForm from './EventForm';
+import EventForm from './forms/EventForm';
 
 export default function CreateEventDrawer() {
   const router = useRouter();
