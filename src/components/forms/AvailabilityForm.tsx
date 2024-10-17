@@ -35,12 +35,19 @@ type Weekday =
   | 'saturday'
   | 'sunday';
 
-export default function AvailabilityForm() {
-  const form = useForm<z.infer<typeof availabilitySchema>>({
+type AvailabilityData = z.infer<typeof availabilitySchema>;
+
+export default function AvailabilityForm({
+  initialData,
+}: {
+  initialData: AvailabilityData;
+}) {
+  const form = useForm<AvailabilityData>({
     resolver: zodResolver(availabilitySchema),
+    defaultValues: { ...initialData },
   });
 
-  function onSubmit(values: z.infer<typeof availabilitySchema>) {
+  function onSubmit(values: AvailabilityData) {
     console.log('🚀 ~ onSubmit ~ values:', values);
   }
 
