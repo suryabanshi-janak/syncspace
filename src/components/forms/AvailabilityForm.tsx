@@ -15,7 +15,7 @@ import {
 
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
-import { availabilitySchema } from '@/lib/validators';
+import { AvailabilityData, availabilitySchema } from '@/lib/validators';
 import { Checkbox } from '../ui/checkbox';
 import { timeSlots } from '@/lib/constants';
 import {
@@ -34,8 +34,6 @@ type Weekday =
   | 'friday'
   | 'saturday'
   | 'sunday';
-
-type AvailabilityData = z.infer<typeof availabilitySchema>;
 
 export default function AvailabilityForm({
   initialData,

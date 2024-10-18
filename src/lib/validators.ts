@@ -53,3 +53,5 @@ export const availabilitySchema = z.object({
   sunday: daySchema,
   timeGap: z.number().min(0, 'Time gap must be 0 or more minutes').int(),
 });
+
+export type AvailabilityData = z.infer<typeof availabilitySchema>;
