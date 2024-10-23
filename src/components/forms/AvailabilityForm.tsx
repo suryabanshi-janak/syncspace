@@ -2,7 +2,6 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
 
 import {
   Form,
@@ -25,6 +24,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../ui/select';
+import { useMutation } from '@tanstack/react-query';
+import { updateAvailability } from '@/actions/availability';
 
 type Weekday =
   | 'monday'
@@ -45,8 +46,12 @@ export default function AvailabilityForm({
     defaultValues: { ...initialData },
   });
 
+  const { mutate, isPending } = useMutation({
+    mutationFn: updateAvailability,
+  });
+
   function onSubmit(values: AvailabilityData) {
-    console.log('🚀 ~ onSubmit ~ values:', values);
+    mutate(values);
   }
 
   return (
@@ -166,14 +171,24 @@ export default function AvailabilityForm({
             <FormItem className='flex items-center gap-x-4'>
               <FormLabel>Minimum gap before booking (minutes):</FormLabel>
               <FormControl>
-                <Input {...field} type='number' className='w-32' />
+                <Input
+                  {...field}
+                  type='number'
+                  onChange={(e) => {
+                    const { value } = e.target;
+                    field.onChange(value ? parseInt(value, 10) : 0);
+                  }}
+                  className='w-32'
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <Button type='submit'>Update Availability</Button>
+        <Button type='submit' disabled={isPending}>
+          {isPending ? 'Updating...' : 'Update Availability'}
+        </Button>
       </form>
     </Form>
   );
