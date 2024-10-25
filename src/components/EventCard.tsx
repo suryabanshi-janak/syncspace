@@ -22,7 +22,7 @@ interface EventProps {
   isPublic?: boolean;
 }
 
-export default function Event({
+export default function EventCard({
   event,
   username,
   isPublic = false,
@@ -73,11 +73,7 @@ export default function Event({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <p>
-          {event?.description
-            ? event.description.substring(0, event.description.indexOf('.'))
-            : ''}
-        </p>
+        <p>{event?.description ? event.description : ''}</p>
       </CardContent>
       {!isPublic && (
         <CardFooter className='flex gap-2'>

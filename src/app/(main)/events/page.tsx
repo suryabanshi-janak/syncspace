@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import Event from '@/components/Event';
+import Event from '@/components/EventCard';
 import { getUserEvents } from '@/actions/event';
 
 export default async function EventsPage() {
